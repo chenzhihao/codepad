@@ -4,10 +4,13 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: '.', dev });
 const handle = app.getRequestHandler();
+const router = require('./router');
 
 app.prepare()
   .then(() => {
     const server = express();
+
+    server.use(router);
 
     server.get('/a', (req, res) => {
       return app.render(req, res, '/a', req.query)
