@@ -13,7 +13,7 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
-const router = require('./router');
+const apiRouter = require('./apiRouter');
 
 app.prepare()
   .then(() => {
@@ -31,7 +31,7 @@ app.prepare()
     server.use(cookieParser());
     server.use(methodOverride());
 
-    server.use(router);
+    server.use('/api', apiRouter);
 
     server.get('/a', (req, res) => {
       return app.render(req, res, '/a', req.query)
@@ -41,8 +41,8 @@ app.prepare()
       return handle(req, res)
     });
 
-    server.listen(3000, (err) => {
+    server.listen(3024, (err) => {
       if (err) throw err;
-      console.log('> Ready on http://localhost:3000')
+      console.log('> Ready on http://localhost:3024')
     })
   });
