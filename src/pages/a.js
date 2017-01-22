@@ -1,35 +1,35 @@
-import React from 'react'
+import React from 'react';
 
 export default class MyLuckNo extends React.Component {
   constructor (...args) {
-    super(...args)
-    this.state = {randomNo: null}
+    super(...args);
+    this.state = {randomNo: null};
   }
 
   componentDidMount () {
-    this.recalculate()
+    this.recalculate();
   }
 
   recalculate () {
     this.setState({
       randomNo: Math.ceil(Math.random() * 100)
-    })
+    });
   }
 
   render () {
-    const {randomNo} = this.state
+    const {randomNo} = this.state;
 
     if (randomNo === null) {
-      return (<p>Please wait..</p>)
+      return (<p>Please wait..</p>);
     }
 
     let message;
     if (randomNo < 30) {
-      message = 'Do not give up. Try again.'
+      message = 'Do not give up. Try again.';
     } else if (randomNo < 60) {
-      message = 'You are a lucky guy'
+      message = 'You are a lucky guy';
     } else {
-      message = 'You are soooo lucky!'
+      message = 'You are soooo lucky!';
     }
 
     return (
@@ -38,6 +38,6 @@ export default class MyLuckNo extends React.Component {
         <p>{message}</p>
         <button onClick={() => this.recalculate()}>Try Again</button>
       </div>
-    )
+    );
   }
 }

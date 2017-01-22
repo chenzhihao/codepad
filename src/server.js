@@ -2,11 +2,9 @@ const express = require('express');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dir: '.', dev, quiet: false});
+const app = next({dir: './src', dev, quiet: false});
 const handle = app.getRequestHandler();
 const morgan = require('morgan');
-const path = require('path');
-const _ = require('lodash');
 const cors = require('cors');
 const methodOverride = require('method-override');
 
@@ -17,7 +15,8 @@ const apiRouter = require('./apiRouter');
 
 app.prepare()
   .then(() => {
-    const server = express();
+    let server = express();
+
 
     server.use(morgan('dev'));
     server.use(cors());
@@ -34,15 +33,25 @@ app.prepare()
     server.use('/api', apiRouter);
 
     server.get('/a', (req, res) => {
-      return app.render(req, res, '/a', req.query)
+      return app.render(req, res, '/a', req.query);
     });
 
     server.get('*', (req, res) => {
-      return handle(req, res)
+      return handle(req, res);
     });
 
-    server.listen(3024, (err) => {
+    let serverInstance = server.listen(3024, (err) => {
       if (err) throw err;
-      console.log('> Ready on http://localhost:3024')
-    })
+      console.log('> Ready on http://localhost:3024'); //eslint-disable-line
+    });
+
+
+    let io = require('socket.io').listen(serverInstance);
+
+    io.on('connection', function(socket){
+      console.log('a user connected');
+      socket.on('disconnect', function(){
+        console.log('user disconnected');
+      });
+    });
   });
