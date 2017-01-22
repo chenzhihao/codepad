@@ -40,9 +40,9 @@ app.prepare()
       return handle(req, res);
     });
 
-    let serverInstance = server.listen(3024, (err) => {
+    let serverInstance = server.listen(process.env.npm_package_config_devPort, (err) => {
       if (err) throw err;
-      console.log('> Ready on http://localhost:3024'); //eslint-disable-line
+      console.log('> Ready on http://localhost:' + process.env.npm_package_config_devPort); //eslint-disable-line
     });
 
 
