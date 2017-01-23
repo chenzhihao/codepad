@@ -7,16 +7,19 @@ import io from 'socket.io-client';
 
 export default class index extends Component {
   componentDidMount () {
-    var socket = io('');
-    socket.on('connect', function(){});
+    this.socket = io('');
   }
 
   render () {
     return (
       <div>
+        <button onClick={e => {
+          this.socket.emit('fromClient', document.querySelector('#text').value);
+        }}>test
+        </button>
         <Header />
         <textarea name=""
-                  id=""
+                  id="text"
                   cols="30"
                   rows="10"></textarea>
       </div>

@@ -48,9 +48,13 @@ app.prepare()
 
     let io = require('socket.io').listen(serverInstance);
 
-    io.on('connection', function(socket){
+    io.on('connection', function (socket) {
       console.log('a user connected');
-      socket.on('disconnect', function(){
+      socket.on('fromClient', function (msg) {
+        console.log(msg);
+      });
+
+      socket.on('disconnect', function () {
         console.log('user disconnected');
       });
     });
