@@ -28,9 +28,11 @@
   },
   "dependencies": {
     "body-parser": "^1.16.0",
+    "changesets": "^1.0.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
+    "diff_match_patch": "^0.1.1",
     "express": "^4.14.0",
     "install": "^0.8.4",
     "lodash": "^4.17.4",
