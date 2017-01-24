@@ -1,5 +1,6 @@
 const express = require('express');
 const next = require('next');
+const uuid = require('uuid/v4');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dir: './src', dev, quiet: false});
@@ -13,10 +14,12 @@ const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const apiRouter = require('./apiRouter');
 
+const changesets = require('changesets');
+const Changeset = changesets.Changeset;
+
 app.prepare()
   .then(() => {
     let server = express();
-
 
     server.use(morgan('dev'));
     server.use(cors());
@@ -48,10 +51,20 @@ app.prepare()
 
     let io = require('socket.io').listen(serverInstance);
 
+    let usersMap = new Map();
+    let text = '';
+
     io.on('connection', function (socket) {
-      console.log('a user connected');
-      socket.on('fromClient', function (msg) {
-        console.log(msg);
+      const userId = uuid();
+      usersMap.set(userId, {});
+      console.log('a user connected:', userId);
+      socket.emit('initialization', {userId, text});
+
+      socket.on('changeSet', function (changeSetPack) {
+        const changeSet = Changeset.unpack(changeSetPack);
+        text = changeSet.apply(text);
+        console.log(text);
+        socket.broadcast.emit('changes', {changeSetPack, from: userId});
       });
 
       socket.on('disconnect', function () {
