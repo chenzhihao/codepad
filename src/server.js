@@ -41,5 +41,5 @@ app.prepare()
     });
 
     let io = require('socket.io').listen(serverInstance);
-    const {text, usersMap} = require('./socket/index')(io);
+    require('./socket/index')(io);
   });

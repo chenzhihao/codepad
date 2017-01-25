@@ -10,5 +10,6 @@ module.exports = {
   server: {
     clientInitialization: 'server:clientInitialization',
     dispatchChangeSet: 'server:dispatchChangeSet',
+    forceSync: 'server:forceSync',
   }
 };

@@ -4,14 +4,13 @@ import React, {
   PropTypes,
 } from 'react';
 import io from 'socket.io-client';
-import dmpmod from 'diff_match_patch';
-import changesets from 'changesets';
 import debounce from 'lodash.debounce';
+const utils = require('../utils/utils');
+const dmpEngine = utils.dmpEngine;
+const Changeset = utils.ChangeSet;
+
 import md5 from 'blueimp-md5';
 import events from '../socket/events';
-
-const Changeset = changesets.Changeset;
-const dmp = new dmpmod.diff_match_patch();
 
 export default class index extends Component {
   constructor (props, context) {
@@ -21,30 +20,38 @@ export default class index extends Component {
     this.socket = io('');
     this.calculateDiff = debounce(this._calculateDiff, 1000);
 
-    this.socket.on(events.server.dispatchChangeSet, function ({from, changeSetPack}) {
+    this.socket.on(events.server.dispatchChangeSet, function ({changeSetPack}) {
       const changeSet = Changeset.unpack(changeSetPack);
-      const updatedText = changeSet.apply(me.state.text);
+      const updatedText = changeSet.apply(me.state.lastSyncedText);
       me.setState({text: updatedText, lastSyncedText: updatedText});
     });
 
-    this.socket.on(events.server.clientInitialization, function ({userId, text}) {
+    this.socket.on(events.server.clientInitialization, function ({userId, serverText}, callbackToServer) {
       me.userId = userId;
+      me.setState({text: serverText, lastSyncedText: serverText});
+      callbackToServer({textMd5: md5(me.state.text)});
+    });
+
+    this.socket.on(events.server.forceSync, function (text) {
       me.setState({text, lastSyncedText: text});
-      me.socket.emit(events.client.initializationDone, {md5: md5(me.state.text)});
     });
   }
 
-  heartBeat() {
-    //todo:  should just send hash for bandwidth saving
+  heartBeat () {
+    // todo:  should just send hash for bandwidth saving
     // this.socket.emit('heartBeat', {from: this.userId, text: this.state.text});
   }
 
   _calculateDiff () {
-    const diff = dmp.diff_main(this.state.lastSyncedText, this.state.text);
-    const changeset = Changeset.fromDiff(diff);
-    this.socket.emit(events.client.uploadChangeSet, changeset.pack());
+    const diff = dmpEngine.diff_main(this.state.lastSyncedText, this.state.text);
+    const changeSetPack = Changeset.fromDiff(diff).pack();
 
-    this.setState({lastSyncedText: this.state.text});
+    this.socket.emit(events.client.uploadChangeSet, {
+      from: this.userId,
+      changeSetPack,
+      textMd5: md5(this.state.text),
+      lastSyncedTextMd5: md5(this.state.lastSyncedText)
+    });
   }
 
   render () {
@@ -59,7 +66,7 @@ export default class index extends Component {
                     this.setState({text: e.target.value});
                     this.calculateDiff();
                   }}
-        ></textarea>
+        />
       </div>
     );
   }
