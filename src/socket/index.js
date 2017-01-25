@@ -37,7 +37,7 @@ let handleStack = debounce(function handleStack ({io, socket}) {
   const changeSetPack = Changeset.fromDiff(diff).pack();
   io.emit(events.server.dispatchChangeSet, {changeSetPack});
   lastSyncText = serverText;
-}, 3000);
+}, 1000);
 
 module.exports = function (io) {
   io.on(events.system.connection, function (socket) {
