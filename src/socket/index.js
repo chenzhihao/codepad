@@ -42,6 +42,7 @@ let handleStack = debounce(function handleStack ({io, socket}) {
 module.exports = function (io) {
   io.on(events.system.connection, function (socket) {
     const userId = uuid();
+    console.log('user connected:', userId);
     usersMap.set(userId, {});
     socket.emit(events.server.clientInitialization, {userId, serverText}, function (response) {
       if (!response.md5 === md5(serverText)) {
@@ -59,7 +60,7 @@ module.exports = function (io) {
     });
 
     socket.on(events.system.disconnect, function () {
-      console.log('user disconnected');
+      console.log('user disconnected:', userId);
     });
   });
 

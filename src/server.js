@@ -1,13 +1,11 @@
 const express = require('express');
 const next = require('next');
-
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dir: './src', dev, quiet: false});
+const app = next({dir: './src', dev});
 const handle = app.getRequestHandler();
 const morgan = require('morgan');
 const cors = require('cors');
 const methodOverride = require('method-override');
-
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
@@ -35,9 +33,10 @@ app.prepare()
       return handle(req, res);
     });
 
-    let serverInstance = server.listen(process.env.npm_package_config_devPort, (err) => {
+    const port = dev ? process.env.npm_package_config_devPort : process.env.npm_package_config_buildPort;
+    let serverInstance = server.listen(port, (err) => {
       if (err) throw err;
-      console.log('> Ready on http://localhost:' + process.env.npm_package_config_devPort); //eslint-disable-line
+      console.log('> Ready on http://localhost:' + port); //eslint-disable-line
     });
 
     let io = require('socket.io').listen(serverInstance);
