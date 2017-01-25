@@ -1,6 +1,4 @@
-# A Real Time Collaborative Code Editor
-
-------
+# codepad - A Real Time Collaborative Code Editor
 
 ### Tech-stacks:
 [react](https://github.com/facebook/react)
