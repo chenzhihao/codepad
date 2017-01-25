@@ -27,6 +27,7 @@
     "glob": "^7.1.1"
   },
   "dependencies": {
+    "blueimp-md5": "^2.6.0",
     "body-parser": "^1.16.0",
     "changesets": "^1.0.2",
     "compression": "^1.6.2",

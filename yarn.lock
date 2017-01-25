@@ -832,6 +832,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
+blueimp-md5@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.6.0.tgz#c96dd67f57db522da9a0c49b464ca44e20c04e0f"
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"
   resolved "http://registry.npm.taobao.org/bn.js/download/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
@@ -2673,6 +2677,10 @@ lodash.clonedeep@~4.5.0:
   version "4.5.0"
   resolved "http://registry.npm.taobao.org/lodash.clonedeep/download/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+
 lodash.pickby@^4.6.0:
   version "4.6.0"
   resolved "http://registry.npm.taobao.org/lodash.pickby/download/lodash.pickby-4.6.0.tgz#7dea21d8c18d7703a27c704c15d3b84a67e33aff"
@@ -4383,7 +4391,7 @@ utils-merge@1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/utils-merge/download/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
-uuid@3.0.1, uuid@^3.0.0, uuid@~3.0.1:
+uuid@3.0.1, uuid@^3.0.0, uuid@^3.0.1, uuid@~3.0.1:
   version "3.0.1"
   resolved "http://registry.npm.taobao.org/uuid/download/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
