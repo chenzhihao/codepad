@@ -31,7 +31,7 @@ let handleStack = debounce(function handleStack ({io, socket}) {
   }
 
   appliedChangeSet = null;
-  console.log(serverText);
+  console.log('serverText:', serverText);
 
   const diff = dmpEngine.diff_main(lastSyncText, serverText);
   const changeSetPack = Changeset.fromDiff(diff).pack();
@@ -55,6 +55,8 @@ module.exports = function (io) {
         socket.emit(events.server.forceSync, serverText);
         return;
       }
+
+      console.log('changeSetPack ', from, Changeset.unpack(changeSetPack).inspect());
       changeSetStack.push({changeSet: Changeset.unpack(changeSetPack), textMd5, from, lastSyncedTextMd5});
       handleStack({io, socket});
     });
